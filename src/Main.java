@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static int rows = 3;
-    public static int columns = 4;
+    public static int sizeX = 3;
+    public static int sizeY = 4;
     public static int amountOfEnemies = 10;
     public static int transistorNeeded = 100;
     public static int moves = 40;
@@ -44,6 +44,11 @@ public class Main {
 
     private static void startNewGame() {
 
+        Game game = new Game(sizeX, sizeY, amountOfEnemies,
+                transistorNeeded, moves);
+        game.fillFieldWithEmptyObjects();
+        game.startGame();
+
     }
 
     private static void openOptionsMenu() {
@@ -51,7 +56,10 @@ public class Main {
     }
 
     private static void showCredits() {
-        System.out.println("\nCreated by Dmitry Finashkin, copied by Pavel Protsenko\n" +
-                "version 1.0, last modified 31.08.23\n");
+        System.out.println("""
+
+                Created by Dmitry Finashkin, copied by Pavel Protsenko
+                version 1.0, last modified 31.08.23
+                """);
     }
 }

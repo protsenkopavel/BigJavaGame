@@ -8,27 +8,28 @@ public class OptionsMenu {
 
         do {
 
-            System.out.println("Make your choice:\n" +
-                    "1: Show current settings\n" +
-                    "2: Change settings\n" +
-                    "3: Exit");
+            System.out.println("""
+                    Make your choice:
+                    1: Show current settings
+                    2: Change settings
+                    3: Exit""");
             command = scanner.nextInt();
 
             switch (command){
 
                 case 1:
                     System.out.println("\nCurrent settings:\n" +
-                            "rows: " + Main.rows +
-                            "\ncolumns: " + Main.columns +
+                            "rows: " + Main.sizeX +
+                            "\ncolumns: " + Main.sizeY +
                             "\nenemies: " + Main.amountOfEnemies +
                             "\ntransistors: " + Main.transistorNeeded +
                             "\nmoves: " + Main.moves);
                     break;
                 case 2:
                     System.out.println("Enter new value of rows: ");
-                    Main.rows = scanner.nextInt();
+                    Main.sizeX = scanner.nextInt();
                     System.out.println("Enter new value of columns: ");
-                    Main.columns = scanner.nextInt();
+                    Main.sizeY = scanner.nextInt();
                     System.out.println("Enter new value of enemies: ");
                     Main.amountOfEnemies = scanner.nextInt();
                     System.out.println("Enter new value of transistors: ");
