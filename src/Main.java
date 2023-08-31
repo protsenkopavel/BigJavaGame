@@ -1,6 +1,13 @@
 import java.util.Scanner;
 
 public class Main {
+
+    public static int rows = 3;
+    public static int columns = 4;
+    public static int amountOfEnemies = 10;
+    public static int transistorNeeded = 100;
+    public static int moves = 40;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -8,7 +15,7 @@ public class Main {
 
         do {
 
-            System.out.println("Welcome to BigJavaGame v1.0 \n Please make your choice:");
+            System.out.println("Welcome to BigJavaGame v1.0 \nPlease make your choice:");
             System.out.println("1: Start new game");
             System.out.println("2: Options");
             System.out.println("3: Credits");
@@ -21,7 +28,7 @@ public class Main {
                     startNewGame();
                     break;
                 case "2":
-                    openOptionsMenu();
+                    OptionsMenu.showOptionsMenu();
                     break;
                 case "3":
                     showCredits();
