@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Game {
 
@@ -14,6 +15,10 @@ public class Game {
     private int amountOfFlowers;
     private ArrayList<Flower> flowerArrayList = new ArrayList<Flower>();
     private Random randomNumber = new Random();
+    private Player player;
+    private Scanner scanner = new Scanner(System.in);
+    private Boolean isIncorrectCommand = true;
+
 
     public Game(int rows, int columns, int amountOfEnemies,
                 int transistorNeeded, int movesLeft, int getAmountOfFlowers) {
@@ -59,11 +64,19 @@ public class Game {
 
             showField();
             playerTurn();
+            if (isIncorrectCommand) {
+                incorrectCommand();
+                continue;
+            }
             computerTurn();
             checkIfGameNotFinished();
 
         }
 
+    }
+
+    private void incorrectCommand() {
+        System.out.println("You've entered incorrect command");
     }
 
     private void possesFlowers() {
@@ -77,6 +90,11 @@ public class Game {
     }
 
     private void possesPlayer() {
+
+        int playerRowPosition = randomNumber.nextInt(rows);
+        int playerColumnPosition = randomNumber.nextInt(columns);
+
+        player = new Player(playerRowPosition, playerColumnPosition, this);
 
     }
 
@@ -94,7 +112,7 @@ public class Game {
                 i--;
 
             } else if (field.getFieldable(flowerRowPosition, flowerColumnPosition)
-                    instanceof Enemy) {
+                    instanceof Empty) {
 
                 Flower flower = new Flower(flowerAmountOfTransistors, flowerRowPosition, flowerColumnPosition);
                 field.setFieldable(flowerRowPosition, flowerColumnPosition, flower);
@@ -116,11 +134,18 @@ public class Game {
         }
     }
 
-    private void computerTurn() {
+    private void playerTurn() {
+
+        System.out.println("Please enter command");
+        String command = scanner.nextLine();
+        isIncorrectCommand = player.makeMove(command);
 
     }
 
-    private void playerTurn() {
+    private void computerTurn() {
+
+        turnsLeft--;
+
 
     }
 

@@ -20,6 +20,7 @@ public class Player implements Fieldable {
         this.columnIndex = columnIndex;
         this.game = game;
         this.field = game.getField();
+        field.setFieldable(rowIndex, columnIndex, this);
     }
 
     public int getRowIndex() {
@@ -38,17 +39,19 @@ public class Player implements Fieldable {
         this.columnIndex = columnIndex;
     }
 
-    public void makeMove(String command) {
+    public Boolean makeMove(String command) {
+
+        Boolean isIncorrectMove = true;
 
         switch (command) {
-            case MOVE_LEFT -> movePlayer(0, -1);
-            case MOVE_RIGHT -> movePlayer(0, 1);
-            case MOVE_UP -> movePlayer(-1, 0);
-            case MOVE_DOWN -> movePlayer(1, 0);
-            case NO_MOVE -> movePlayer(0, 0);
+            case MOVE_LEFT -> isIncorrectMove = movePlayer(0, -1);
+            case MOVE_RIGHT -> isIncorrectMove = movePlayer(0, 1);
+            case MOVE_UP -> isIncorrectMove = movePlayer(-1, 0);
+            case MOVE_DOWN -> isIncorrectMove = movePlayer(1, 0);
+            case NO_MOVE -> isIncorrectMove = false;
             default -> showError(command);
         }
-
+        return isIncorrectMove;
     }
 
     private void showError(String command) {
@@ -58,35 +61,39 @@ public class Player implements Fieldable {
 
     }
 
-    public void movePlayer(int deltaRowIndex, int deltaColumnIndex) {
+    public Boolean movePlayer(int deltaRowIndex, int deltaColumnIndex) {
 
         int newRowIndex = rowIndex + deltaRowIndex;
         int newColumnIndex = columnIndex + deltaColumnIndex;
 
-        if ((newRowIndex > 0) && (newRowIndex < field.getSizeY())
-                && (newColumnIndex > 0) && (newColumnIndex < field.getSizeX())
-                && !((field.getFieldable(newColumnIndex, newRowIndex) instanceof Enemy))) {
+        if ((newRowIndex >= 0) && (newRowIndex <= field.getSizeX())
+                && (newColumnIndex >= 0) && (newColumnIndex <= field.getSizeY())
+                && !((field.getFieldable(newRowIndex, newColumnIndex) instanceof Enemy))) {
 
-            if (field.getFieldable(newColumnIndex, newRowIndex) instanceof Flower) {
+            if (field.getFieldable(newRowIndex, newColumnIndex) instanceof Flower) {
 
-                Flower flower = (Flower) field.getFieldable(newColumnIndex, newRowIndex);
+                Flower flower = (Flower) field.getFieldable(newRowIndex, newColumnIndex);
                 game.setTransistorsGathered(flower.getTransistors());
                 game.getFlowerArrayList().remove(flower);
                 swapPlayer(newRowIndex, newColumnIndex);
 
             }
 
-            if (field.getFieldable(newColumnIndex, newRowIndex) instanceof Enemy) {
-                swapPlayer(newRowIndex, newColumnIndex);
+            if (field.getFieldable(newRowIndex, newColumnIndex) instanceof Enemy) {
+                swapPlayer(newColumnIndex, newRowIndex);
             }
+            return false;
 
+        }
+        else {
+            return true;
         }
 
     }
 
     private void swapPlayer(int newRowIndex, int newColumnIndex) {
-        field.setFieldable(newColumnIndex, newRowIndex, this);
-        field.setFieldable(columnIndex, rowIndex, new Empty());
+        field.setFieldable(newRowIndex, newColumnIndex, this);
+        field.setFieldable(rowIndex, columnIndex, new Empty());
         rowIndex = newRowIndex;
         columnIndex = newColumnIndex;
     }
