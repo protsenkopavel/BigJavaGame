@@ -19,23 +19,26 @@ public class OptionsMenu {
 
                 case 1:
                     System.out.println("\nCurrent settings:\n" +
-                            "rows: " + Main.sizeX +
-                            "\ncolumns: " + Main.sizeY +
+                            "rows: " + Main.rows +
+                            "\ncolumns: " + Main.columns +
                             "\nenemies: " + Main.amountOfEnemies +
                             "\ntransistors: " + Main.transistorNeeded +
-                            "\nmoves: " + Main.moves);
+                            "\nmoves: " + Main.moves +
+                            "\nflowers: " + Main.getAmountOfFlowers);
                     break;
                 case 2:
                     System.out.println("Enter new value of rows: ");
-                    Main.sizeX = scanner.nextInt();
+                    Main.rows = scanner.nextInt();
                     System.out.println("Enter new value of columns: ");
-                    Main.sizeY = scanner.nextInt();
+                    Main.columns = scanner.nextInt();
                     System.out.println("Enter new value of enemies: ");
                     Main.amountOfEnemies = scanner.nextInt();
                     System.out.println("Enter new value of transistors: ");
                     Main.transistorNeeded = scanner.nextInt();
                     System.out.println("Enter new value of moves: ");
                     Main.moves = scanner.nextInt();
+                    System.out.println("Enter new value of flowers: ");
+                    Main.getAmountOfFlowers = scanner.nextInt();
                     break;
                 case 3:
                     break;

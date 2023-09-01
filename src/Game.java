@@ -1,36 +1,55 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Game {
 
-    private int sizeX;
-    private int sizeY;
+    private int rows;
+    private int columns;
     private int amountOfEnemies;
     private int transistorNeeded;
-    private int movesLeft;
-    private int flowersGathered;
+    private int turnsLeft;
+    private int transistorsGathered;
     private Field field;
     private boolean isGameFinished = false;
+    private int amountOfFlowers;
+    private ArrayList<Flower> flowerArrayList = new ArrayList<Flower>();
+    private Random randomNumber = new Random();
 
-    public Game(int sizeX, int sizeY, int amountOfEnemies,
-                int transistorNeeded, int movesLeft) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public Game(int rows, int columns, int amountOfEnemies,
+                int transistorNeeded, int movesLeft, int getAmountOfFlowers) {
+        this.rows = rows;
+        this.columns = columns;
         this.amountOfEnemies = amountOfEnemies;
         this.transistorNeeded = transistorNeeded;
-        this.movesLeft = movesLeft;
+        this.turnsLeft = movesLeft;
+        this.amountOfFlowers = getAmountOfFlowers;
 
-        field = new Field(sizeX, sizeY);
+        field = new Field(rows, columns);
     }
 
-    public void fillFieldWithEmptyObjects(){
+    public Field getField(){
+        return this.field;
+    }
 
-        for (int i = 0; i < sizeX; i++) {
-            for (int j = 0; j < sizeY; j++) {
+    public ArrayList<Flower> getFlowerArrayList() {
+        return this.flowerArrayList;
+    }
+
+    public void setTransistorsGathered(int transistorsToAdd) {
+        this.transistorsGathered += transistorsToAdd;
+    }
+
+    public void fillFieldWithEmptyObjects() {
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 field.setFieldable(i, j, new Empty());
             }
         }
 
     }
 
-    public void startGame(){
+    public void startGame() {
 
         possesPlayer();
         possesEnemies();
@@ -49,6 +68,8 @@ public class Game {
 
     private void possesFlowers() {
 
+        generateFlowers();
+
     }
 
     private void possesEnemies() {
@@ -59,18 +80,56 @@ public class Game {
 
     }
 
+    private void generateFlowers() {
+
+        for (int i = amountOfFlowers - flowerArrayList.size(); i > 0; ) {
+
+            int flowerAmountOfTransistors = randomNumber.nextInt(9) + 1;
+            int flowerRowPosition = randomNumber.nextInt(rows);
+            int flowerColumnPosition = randomNumber.nextInt(columns);
+
+            if (field.getFieldable(flowerRowPosition, flowerColumnPosition) instanceof Player) {
+
+                transistorsGathered = transistorsGathered + flowerAmountOfTransistors;
+                i--;
+
+            } else if (field.getFieldable(flowerRowPosition, flowerColumnPosition)
+                    instanceof Enemy) {
+
+                Flower flower = new Flower(flowerAmountOfTransistors, flowerRowPosition, flowerColumnPosition);
+                field.setFieldable(flowerRowPosition, flowerColumnPosition, flower);
+                flowerArrayList.add(flower);
+                i--;
+
+            }
+        }
+
+    }
+
     private void checkIfGameNotFinished() {
+
+        if (turnsLeft == 0) {
+            System.out.println("No more turns left, you lost!");
+        } else if (transistorsGathered >= 100) {
+            System.out.println("You have gathered the required number of transistors, congrats!");
+            isGameFinished = true;
+        }
     }
 
     private void computerTurn() {
-        
+
     }
 
     private void playerTurn() {
-        
+
     }
 
     private void showField() {
-        
+
+        System.out.println("\n\nTurns left: " + turnsLeft
+        + ", transistors gathered: " + transistorsGathered
+        + "/" + transistorNeeded);
+        field.showField();
+
     }
 }
