@@ -2,9 +2,9 @@ import java.util.Objects;
 
 public class Flower implements Fieldable{
 
-    private int transistors;
-    private int rowIndex;
-    private int columnIndex;
+    private final int transistors;
+    private final int rowIndex;
+    private final int columnIndex;
 
     public Flower(int transistors, int rowIndex, int columnIndex) {
         this.transistors = transistors;
@@ -16,25 +16,9 @@ public class Flower implements Fieldable{
         return transistors;
     }
 
-    public int getRowIndex() {
-        return rowIndex;
-    }
-
-    public void setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-    }
-
-    public int getColumnIndex() {
-        return columnIndex;
-    }
-
-    public void setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
-    }
-
     @Override
     public String getSymbol() {
-        return String.valueOf(" " + transistors + " ");
+        return " " + transistors + " ";
     }
 
     @Override

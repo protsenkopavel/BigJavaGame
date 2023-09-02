@@ -24,21 +24,12 @@ public class OptionsMenu {
                             "\nenemies: " + Main.amountOfEnemies +
                             "\ntransistors: " + Main.transistorNeeded +
                             "\nmoves: " + Main.moves +
-                            "\nflowers: " + Main.getAmountOfFlowers);
+                            "\nflowers: " + Main.AmountOfFlowers);
                     break;
                 case 2:
-                    System.out.println("Enter new value of rows: ");
-                    Main.rows = scanner.nextInt();
-                    System.out.println("Enter new value of columns: ");
-                    Main.columns = scanner.nextInt();
-                    System.out.println("Enter new value of enemies: ");
-                    Main.amountOfEnemies = scanner.nextInt();
-                    System.out.println("Enter new value of transistors: ");
-                    Main.transistorNeeded = scanner.nextInt();
-                    System.out.println("Enter new value of moves: ");
-                    Main.moves = scanner.nextInt();
-                    System.out.println("Enter new value of flowers: ");
-                    Main.getAmountOfFlowers = scanner.nextInt();
+
+                    changeParams();
+
                     break;
                 case 3:
                     break;
@@ -50,5 +41,60 @@ public class OptionsMenu {
         } while (command != 3);
 
     }
+
+    private static void changeParams() {
+        String value;
+
+        scanner.nextLine();
+        System.out.println("Enter new value of rows, current value ["+Main.rows+"]: ");
+
+        value = scanner.nextLine();
+        Main.rows = changeValues(value);
+
+        System.out.println("Enter new value of columns, current value ["+Main.columns+"]: ");
+
+        value = scanner.nextLine();
+        Main.columns = changeValues(value);
+
+        System.out.println("Enter new value of enemies, current value ["+Main.amountOfEnemies+"]: ");
+
+        value = scanner.nextLine();
+        Main.amountOfEnemies = changeValues(value);
+
+        System.out.println("Enter new value of transistors, current value ["+Main.transistorNeeded+"]: ");
+        value = scanner.nextLine();
+        Main.transistorNeeded = changeValues(value);
+
+        System.out.println("Enter new value of moves, current value ["+Main.moves+"]: ");
+        value = scanner.nextLine();
+        Main.moves = changeValues(value);
+
+        System.out.println("Enter new value of flowers, current value ["+Main.AmountOfFlowers +"]: ");
+        value = scanner.nextLine();
+        Main.AmountOfFlowers = changeValues(value);
+
+        if (isValuesNotPlayable()) {
+            System.out.println("Values aren't playable, press enter and try again!");
+            changeParams();
+        }
+    }
+
+    private static Boolean isValuesNotPlayable(){
+
+        double fieldSize = Main.rows * Main.columns;
+        double allGameObjects = Main.amountOfEnemies + Main.AmountOfFlowers + 1;
+
+        return ((allGameObjects / fieldSize) > 0.75);
+
+    }
+
+    private static int changeValues(String value) {
+        if (!value.isBlank()){
+            return Integer.parseInt(value);
+        }
+        return 0;
+    }
+
+
 
 }

@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static int rows = 3;
-    public static int columns = 4;
-    public static int amountOfEnemies = 10;
+    public static int rows = 12;
+    public static int columns = 20;
+    public static int amountOfEnemies = 20;
     public static int transistorNeeded = 100;
     public static int moves = 40;
-    public static int getAmountOfFlowers = 10;
+    public static int AmountOfFlowers = 10;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -46,13 +46,9 @@ public class Main {
     private static void startNewGame() {
 
         Game game = new Game(rows, columns, amountOfEnemies,
-                transistorNeeded, moves, getAmountOfFlowers);
+                transistorNeeded, moves, AmountOfFlowers);
         game.fillFieldWithEmptyObjects();
         game.startGame();
-
-    }
-
-    private static void openOptionsMenu() {
 
     }
 
