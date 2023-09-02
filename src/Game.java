@@ -14,10 +14,12 @@ public class Game {
     private boolean isGameFinished = false;
     private int amountOfFlowers;
     private ArrayList<Flower> flowerArrayList = new ArrayList<Flower>();
+    private ArrayList<Enemy> enemyArrayList = new ArrayList<>();
     private Random randomNumber = new Random();
     private Player player;
     private Scanner scanner = new Scanner(System.in);
     private Boolean isIncorrectCommand = true;
+    private int triesToGenerate = 0;
 
 
     public Game(int rows, int columns, int amountOfEnemies,
@@ -32,7 +34,7 @@ public class Game {
         field = new Field(rows, columns);
     }
 
-    public Field getField(){
+    public Field getField() {
         return this.field;
     }
 
@@ -86,6 +88,7 @@ public class Game {
     }
 
     private void possesEnemies() {
+
 
     }
 
@@ -144,16 +147,68 @@ public class Game {
 
     private void computerTurn() {
 
+        enemyMove();
+        generateFlowers();
         turnsLeft--;
 
 
     }
 
+    private void enemyMove() {
+
+        int rowIndex = 0;
+        int columnIndex = 0;
+        int newRowIndex = 0;
+        int newColumnIndex = 0;
+        int regenerateIndex = 0;
+        boolean isNeededToRegenerate = true;
+
+        for (Enemy enemy : enemyArrayList) {
+
+            rowIndex = enemy.getRowIndex();
+            columnIndex = enemy.getColumnIndex();
+
+            do {
+
+                int deltaRow = randomNumber.nextInt(3) - 1;
+                int deltaColumn = randomNumber.nextInt(3) - 1;
+
+                newRowIndex = rowIndex + deltaRow;
+                newColumnIndex = columnIndex + deltaColumn;
+
+                if ((newRowIndex < 0) || (newColumnIndex < 0) || (newRowIndex > field.getSizeX()) ||
+                        (newColumnIndex >= field.getSizeY()) || field.getFieldable(newRowIndex, newColumnIndex) instanceof Player
+                        || field.getFieldable(newRowIndex, newColumnIndex) instanceof Enemy) {
+                    regenerateIndex++;
+                    isNeededToRegenerate = true;
+                } else {
+                    if (field.getFieldable(newRowIndex, newColumnIndex) instanceof Flower) {
+                        Flower flower = (Flower) field.getFieldable(newRowIndex, newColumnIndex);
+                        flowerArrayList.remove(flower);
+                        isNeededToRegenerate = swapEnemy(rowIndex, columnIndex, newRowIndex, newColumnIndex, enemy);
+                    } else {
+                        isNeededToRegenerate = swapEnemy(rowIndex, columnIndex, newRowIndex, newColumnIndex, enemy);
+                    }
+                }
+
+            } while (isNeededToRegenerate && regenerateIndex <= 10);
+
+        }
+    }
+
+    private boolean swapEnemy(int rowIndex, int columnIndex, int newRowIndex, int newColumnIndex, Enemy enemy) {
+        field.setFieldable(newRowIndex, newColumnIndex, enemy);
+        field.setFieldable(rowIndex, columnIndex, new Empty());
+        enemy.setRowIndex(newRowIndex);
+        enemy.setColumnIndex(newColumnIndex);
+        return false;
+    }
+
     private void showField() {
 
         System.out.println("\n\nTurns left: " + turnsLeft
-        + ", transistors gathered: " + transistorsGathered
-        + "/" + transistorNeeded);
+                + ", transistors gathered: " + transistorsGathered
+                + "/" + transistorNeeded);
         field.showField();
 
     }
